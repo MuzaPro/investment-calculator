@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Growth Calculator</title>
+    <!-- Chart.js for creating beautiful charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Investment Growth Calculator</h1>
+        <p>Compare the impact of investing versus keeping money uninvested (subject to inflation)</p>
+        
+        <div class="calculator">
+            <div class="inputs">
+                <div class="input-group">
+                    <label for="initialAmount">Initial Amount (₪):</label>
+                    <input type="number" id="initialAmount" value="1000" min="1">
+                </div>
+                
+                <div class="input-group">
+                    <label for="years">Years:</label>
+                    <input type="range" id="years" min="1" max="30" value="10">
+                    <span id="yearsValue">10</span>
+                </div>
+                
+                <div class="input-group">
+                    <label for="inflationRate">Inflation Rate (%):</label>
+                    <input type="range" id="inflationRate" min="0" max="10" step="0.5" value="2.5">
+                    <span id="inflationValue">2.5</span>
+                </div>
+                
+                <div class="input-group">
+                    <label for="investmentReturn">Investment Return (%):</label>
+                    <input type="range" id="investmentReturn" min="0" max="15" step="0.5" value="7.5">
+                    <span id="returnValue">7.5</span>
+                </div>
+                
+                <button id="calculateButton">Calculate</button>
+            </div>
+            
+            <div class="results">
+                <canvas id="investmentChart"></canvas>
+                
+                <div class="summary">
+                    <h3>Results Summary</h3>
+                    <div id="resultDetails"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Created by Your Name | <a href="https://github.com/yourusername" target="_blank">GitHub</a></p>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
