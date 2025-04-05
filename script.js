@@ -73,7 +73,8 @@ function updateChart(initialAmount, years, inflationRate, investmentReturn) {
         data: data,
         options: {
             responsive: true,
-            maintainAspectRatio: false,
+            maintainAspectRatio: true,
+            aspectRatio: 1.5,
             plugins: {
                 title: {
                     display: true,
