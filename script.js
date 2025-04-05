@@ -13,6 +13,15 @@ function formatCurrency(amount) {
 
 // Function to calculate values similar to your Python function
 function calculateValues(initialAmount, years, inflationRate, investmentReturn) {
+    // Handle invalid inputs
+    if (isNaN(initialAmount) || initialAmount <= 0) initialAmount = 1000;
+    if (isNaN(years) || years < 1) years = 10;
+    if (isNaN(inflationRate)) inflationRate = 2.5;
+    if (isNaN(investmentReturn)) investmentReturn = 7.5;
+    
+    // Ensure years is an integer and within reasonable range
+    years = Math.min(Math.max(Math.floor(years), 1), 50);
+    
     let timePoints = Array.from({ length: years + 1 }, (_, i) => i);
     
     // Calculate invested money growth
@@ -105,6 +114,13 @@ function updateChart(initialAmount, years, inflationRate, investmentReturn) {
                         display: true,
                         text: 'Amount (₪)'
                     },
+                    // Set a reasonable maximum based on inputs
+                    suggestedMax: function(context) {
+                        const initialAmount = parseFloat(document.getElementById('initialAmount').value);
+                        const years = parseInt(document.getElementById('years').value);
+                        const investmentReturn = parseFloat(document.getElementById('investmentReturn').value);
+                        return initialAmount * Math.pow(1 + investmentReturn / 100, years) * 1.1;
+                    },
                     ticks: {
                         callback: function(value) {
                             return formatCurrency(value);
@@ -158,27 +174,49 @@ document.addEventListener('DOMContentLoaded', function() {
     const returnValue = document.getElementById('returnValue');
     const calculateButton = document.getElementById('calculateButton');
     
-    // Update display values for sliders
+    // Update display values for sliders and recalculate in real-time
     yearsInput.addEventListener('input', () => {
         yearsValue.textContent = yearsInput.value;
+        updateFromInputs();
     });
     
     inflationRateInput.addEventListener('input', () => {
         inflationValue.textContent = inflationRateInput.value;
+        updateFromInputs();
     });
     
     investmentReturnInput.addEventListener('input', () => {
         returnValue.textContent = investmentReturnInput.value;
+        updateFromInputs();
     });
     
-    // Calculate button click handler
-    calculateButton.addEventListener('click', () => {
+    // Initial amount input handler
+    initialAmountInput.addEventListener('input', debounce(() => {
+        updateFromInputs();
+    }, 500));
+    
+    // Helper function to get all values and update
+    function updateFromInputs() {
         const initialAmount = parseFloat(initialAmountInput.value);
         const years = parseInt(yearsInput.value);
         const inflationRate = parseFloat(inflationRateInput.value);
         const investmentReturn = parseFloat(investmentReturnInput.value);
         
         updateChart(initialAmount, years, inflationRate, investmentReturn);
+    }
+    
+    // Debounce function to prevent too many updates
+    function debounce(func, wait) {
+        let timeout;
+        return function() {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, arguments), wait);
+        };
+    }
+    
+    // Keep the calculate button for users who prefer it
+    calculateButton.addEventListener('click', () => {
+        updateFromInputs();
     });
     
     // Initial calculation
