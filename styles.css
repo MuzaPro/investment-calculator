@@ -141,3 +141,9 @@ h3 {
 .footer a:hover {
     text-decoration: underline;
 }
+
+#monthlyContribution {
+    background-color: #e8f4fd;
+    border: 4px solid #b3e5fc;
+    border-radius: 8px;
+}
